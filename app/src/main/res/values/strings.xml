@@ -1,0 +1,29 @@
+<!--
+  ~ Copyright (C) 2016 wanghong
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <string name="app_name">DYTT</string>
+    <string name="action_settings">Settings</string>
+    <string name="category_recently_update">Recently Updates</string>
+    <string name="category_tv_drama_chinese">Chinese TV Drama</string>
+    <string name="category_tv_drama_western">Western TV Drama</string>
+    <string name="category_tv_drama_japan_korea">Japan/Korea TV Drama</string>
+    <string name="copy_to_clipboard">Copy to clipboard</string>
+    <string name="go_to_thunder">Go to thunder</string>
+    <string name="prompt_thunder_not_installed">Thunder not installed</string>
+    <string name="action_install">Install</string>
+    <string name="prompt_any_suggestion">Any suggestion?\n\nContact me: wh.lin63@gmail.com</string>
+</resources>
