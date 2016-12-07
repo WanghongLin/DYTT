@@ -26,4 +26,5 @@
     <string name="prompt_thunder_not_installed">Thunder not installed</string>
     <string name="action_install">Install</string>
     <string name="prompt_any_suggestion">Any suggestion?\n\nContact me: wh.lin63@gmail.com</string>
+    <string name="open_with_thunder">Open with Thunder</string>
 </resources>

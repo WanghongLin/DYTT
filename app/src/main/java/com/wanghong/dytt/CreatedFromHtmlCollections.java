@@ -26,9 +26,8 @@ import java.lang.annotation.Target;
  * Created by wanghong on 11/19/16.
  */
 
-@Documented
 @Target(ElementType.FIELD)
+@Documented
 @Retention(RetentionPolicy.RUNTIME)
-@interface SourceHtmlAttribute {
-    String value();
+@interface CreatedFromHtmlCollections {
 }

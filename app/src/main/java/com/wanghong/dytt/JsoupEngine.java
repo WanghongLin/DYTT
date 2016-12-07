@@ -48,7 +48,7 @@ public class JsoupEngine<T> {
     private String pageUrl;
     private JsoupEngineCallback<T> jsoupEngineCallback;
 
-    private class HtmlTagAttribute {
+    private static class HtmlTagAttribute {
 
         private String htmlTag;
         private String htmlAttribute;
@@ -89,11 +89,11 @@ public class JsoupEngine<T> {
 
     private Map<Field, HtmlTagAttribute> fieldHtmlTagAttributeMap = new HashMap<>();
 
-    public interface JsoupEngineCallback<T> {
-        void onJsoupParsed(List<T> results);
+    public interface JsoupEngineCallback<U> {
+        void onJsoupParsed(List<U> results);
     }
 
-    public JsoupEngine setResultClass(Class<T> tClass) {
+    public JsoupEngine<T> setResultClass(Class<T> tClass) {
         this.tClass = tClass;
         fieldHtmlTagAttributeMap.clear();
         for (Field field : tClass.getDeclaredFields()) {
@@ -102,18 +102,18 @@ public class JsoupEngine<T> {
             boolean collections = false;
             boolean absHref = false;
             for (Annotation annotation : field.getDeclaredAnnotations()) {
-                if (annotation.annotationType().isAssignableFrom(SourceHtmlTag.class)) {
-                    SourceHtmlTag sourceHtmlTag = (SourceHtmlTag) annotation;
-                    tag = sourceHtmlTag.value();
+                if (annotation.annotationType().isAssignableFrom(CreatedFromHtmlTag.class)) {
+                    CreatedFromHtmlTag createdFromHtmlTag = (CreatedFromHtmlTag) annotation;
+                    tag = createdFromHtmlTag.value();
                 }
-                if (annotation.annotationType().isAssignableFrom(SourceHtmlAttribute.class)) {
-                    SourceHtmlAttribute sourceHtmlAttribute = ((SourceHtmlAttribute) annotation);
-                    attribute = sourceHtmlAttribute.value();
+                if (annotation.annotationType().isAssignableFrom(CreatedFromHtmlAttribute.class)) {
+                    CreatedFromHtmlAttribute createdFromHtmlAttribute = ((CreatedFromHtmlAttribute) annotation);
+                    attribute = createdFromHtmlAttribute.value();
                 }
-                if (annotation.annotationType().isAssignableFrom(SourceHtmlCollections.class)) {
+                if (annotation.annotationType().isAssignableFrom(CreatedFromHtmlCollections.class)) {
                     collections = true;
                 }
-                if (annotation.annotationType().isAssignableFrom(SourceHtmlAbsHref.class)) {
+                if (annotation.annotationType().isAssignableFrom(CreatedFromHtmlAbsHref.class)) {
                     absHref = true;
                 }
             }
@@ -131,12 +131,12 @@ public class JsoupEngine<T> {
         return this;
     }
 
-    public JsoupEngine setPageUrl(String pageUrl) {
+    public JsoupEngine<T> setPageUrl(String pageUrl) {
         this.pageUrl = pageUrl;
         return this;
     }
 
-    public JsoupEngine setJsoupEngineCallback(JsoupEngineCallback<T> jsoupEngineCallback) {
+    public JsoupEngine<T> setJsoupEngineCallback(JsoupEngineCallback<T> jsoupEngineCallback) {
         this.jsoupEngineCallback = jsoupEngineCallback;
         return this;
     }

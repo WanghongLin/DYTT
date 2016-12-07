@@ -44,8 +44,6 @@ public class DyttDetailActivity extends AppCompatActivity {
     public static final int TYPE_MOVIE = 710;
     public static final int TYPE_DRAMA = 265;
 
-    private static final String XUN_LEI_PACKAGE_NAME = "com.xunlei.downloadprovider";
-
     private ImageView posterImageView;
     private ImageView thumbnailImageView;
     private TextView descriptionTextView;
@@ -104,7 +102,7 @@ public class DyttDetailActivity extends AppCompatActivity {
         gotoThunderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = getPackageManager().getLaunchIntentForPackage(XUN_LEI_PACKAGE_NAME);
+                Intent intent = getPackageManager().getLaunchIntentForPackage(ActivityConstants.THUNDER_PACKAGE_NAME);
                 if (intent != null && intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 } else {
@@ -112,7 +110,7 @@ public class DyttDetailActivity extends AppCompatActivity {
                             .setAction(R.string.action_install, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + XUN_LEI_PACKAGE_NAME));
+                                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + ActivityConstants.THUNDER_PACKAGE_NAME));
                                     if (i.resolveActivity(getPackageManager()) != null) {
                                         startActivity(i);
                                     }

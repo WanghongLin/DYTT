@@ -26,9 +26,8 @@ import java.lang.annotation.Target;
  * Created by wanghong on 11/19/16.
  */
 
-@Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@interface SourceHtmlTag {
-    String value();
+@Documented
+@interface CreatedFromHtmlAbsHref {
 }

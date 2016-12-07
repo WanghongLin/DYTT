@@ -22,16 +22,16 @@ package com.wanghong.dytt;
 
 public class DyttMovieItem {
 
-    @SourceHtmlTag("div[id='Zoom'] > span > p > img[src]:lt(1)")
-    @SourceHtmlAttribute("src")
+    @CreatedFromHtmlTag("div[id='Zoom'] > span > p > img[src]:lt(1)")
+    @CreatedFromHtmlAttribute("src")
     private String posterUrl;
 
-    @SourceHtmlTag("div[id='Zoom'] > span > p > img[src]:gt(2)")
-    @SourceHtmlAttribute("src")
+    @CreatedFromHtmlTag("div[id='Zoom'] > span > p > img[src]:gt(2)")
+    @CreatedFromHtmlAttribute("src")
     private String thumbnailUrl;
 
-    @SourceHtmlTag("div[id='Zoom'] > span > table > tbody > tr > td > a[href]:lt(1)")
-    @SourceHtmlAttribute("href")
+    @CreatedFromHtmlTag("div[id='Zoom'] > span > table > tbody > tr > td > a[href]:lt(1)")
+    @CreatedFromHtmlAttribute("href")
     private String thunderUrl;
 
     @Override

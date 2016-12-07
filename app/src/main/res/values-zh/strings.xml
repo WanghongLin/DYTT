@@ -27,4 +27,5 @@
     <string name="prompt_any_suggestion">有何高见？麻烦联系 wh.lin63@gmail.com</string>
     <string name="prompt_thunder_not_installed">貌似手机迅雷没有安装</string>
     <string name="action_install">去应用市场安装</string>
+    <string name="open_with_thunder">使用手机迅雷打开</string>
 </resources>
