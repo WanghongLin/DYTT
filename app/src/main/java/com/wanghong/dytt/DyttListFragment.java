@@ -19,12 +19,14 @@ package com.wanghong.dytt;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import java.util.List;
 
@@ -40,6 +42,8 @@ public class DyttListFragment extends Fragment {
     private String url;
     private String title;
     private int type;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private DyttListAdapter dyttListAdapter;
     private static final int STARTED_PAGE = 1;
@@ -83,6 +87,16 @@ public class DyttListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dytt_list, container, false);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.dytt_list_swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                dyttListAdapter = null;
+                loadNextDataFromApi(0, true);
+            }
+        });
+        progressBar = (ProgressBar) view.findViewById(R.id.dytt_list_progress);
         recyclerView = (RecyclerView) view.findViewById(R.id.dytt_list_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -92,15 +106,18 @@ public class DyttListFragment extends Fragment {
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                loadNextDataFromApi(page);
+                loadNextDataFromApi(page, false);
             }
         });
         return view;
     }
 
-    private void loadNextDataFromApi(int page) {
+    private void loadNextDataFromApi(int page, boolean swipeRefresh) {
         String url = String.format(this.url, page+STARTED_PAGE);
         Log.d(TAG, "loadNextDataFromApi: " + url);
+        if (progressBar != null && !swipeRefresh) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
         new JsoupEngine<DyttListItem>().setPageUrl(url).setResultClass(DyttListItem.class)
                 .setJsoupEngineCallback(new JsoupEngine.JsoupEngineCallback<DyttListItem>() {
                     @Override
@@ -108,6 +125,12 @@ public class DyttListFragment extends Fragment {
                         if (results != null) {
                             for (DyttListItem result : results) {
                                 result.setType(type);
+                            }
+                            if (swipeRefreshLayout != null) {
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+                            if (progressBar != null) {
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
                             if (dyttListAdapter == null) {
                                 dyttListAdapter = new DyttListAdapter(results, getActivity());
@@ -139,7 +162,7 @@ public class DyttListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        loadNextDataFromApi(0);
+        loadNextDataFromApi(0, false);
     }
 
     public String getTitle() {
