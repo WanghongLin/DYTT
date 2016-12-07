@@ -32,15 +32,15 @@ public class DyttListItem {
         this.type = type;
     }
 
-    @SourceHtmlTag("a[href].ulink")
+    @CreatedFromHtmlTag("a[href].ulink")
     private String title;
 
-    @SourceHtmlTag("a[href].ulink")
-    @SourceHtmlAttribute("href")
-    @SourceHtmlAbsHref
+    @CreatedFromHtmlTag("a[href].ulink")
+    @CreatedFromHtmlAttribute("href")
+    @CreatedFromHtmlAbsHref
     private String targetUrl;
 
-    @SourceHtmlTag("td > font[color='#8F8C89']")
+    @CreatedFromHtmlTag("td > font[color='#8F8C89']")
     private String dateTime;
 
     @Override

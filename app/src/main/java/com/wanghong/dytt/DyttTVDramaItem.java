@@ -25,13 +25,13 @@ import java.util.List;
 public class DyttTVDramaItem {
 
 
-    @SourceHtmlTag("div[id='Zoom'] > span > p > img[src]:lt(2)")
-    @SourceHtmlAttribute("src")
+    @CreatedFromHtmlTag("div[id='Zoom'] > span > p > img[src]:lt(2)")
+    @CreatedFromHtmlAttribute("src")
     private String posterUrl;
 
-    @SourceHtmlTag("div[id='Zoom'] > span > table > tbody > tr > td > a[href]")
-    @SourceHtmlAttribute("href")
-    @SourceHtmlCollections
+    @CreatedFromHtmlTag("div[id='Zoom'] > span > table > tbody > tr > td > a[href]")
+    @CreatedFromHtmlAttribute("href")
+    @CreatedFromHtmlCollections
     private List<String> thunderUrls;
 
     @Override

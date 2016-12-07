@@ -16,18 +16,11 @@
 
 package com.wanghong.dytt;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
- * Created by wanghong on 11/19/16.
+ * Created by wanghong on 12/7/16.
  */
 
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@interface SourceHtmlAbsHref {
+public class ActivityConstants {
+
+    public static final String THUNDER_PACKAGE_NAME = "com.xunlei.downloadprovider";
 }
