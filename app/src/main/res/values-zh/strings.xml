@@ -28,4 +28,7 @@
     <string name="prompt_thunder_not_installed">貌似手机迅雷没有安装</string>
     <string name="action_install">去应用市场安装</string>
     <string name="open_with_thunder">使用手机迅雷打开</string>
+    <string name="copy_to_clipboard_successfully">已复制</string>
+    <string name="app_store_not_installed">无可用的应用商店</string>
+    <string name="install_thunder_from_browser">使用浏览器安装迅雷</string>
 </resources>

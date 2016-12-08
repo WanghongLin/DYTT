@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -102,21 +101,7 @@ public class DyttDetailActivity extends AppCompatActivity {
         gotoThunderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = getPackageManager().getLaunchIntentForPackage(ActivityConstants.THUNDER_PACKAGE_NAME);
-                if (intent != null && intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                } else {
-                    Snackbar.make(getWindow().getDecorView(), R.string.prompt_thunder_not_installed, Snackbar.LENGTH_SHORT)
-                            .setAction(R.string.action_install, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + ActivityConstants.THUNDER_PACKAGE_NAME));
-                                    if (i.resolveActivity(getPackageManager()) != null) {
-                                        startActivity(i);
-                                    }
-                                }
-                            }).show();
-                }
+                ActivityUtils.navigateToThunder(ActivityUtils.getActivity(v.getContext()), null);
             }
         });
     }
