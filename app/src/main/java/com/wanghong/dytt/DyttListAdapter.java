@@ -39,7 +39,7 @@ public class DyttListAdapter extends RecyclerView.Adapter<DyttListItemViewHolder
 
     @Override
     public DyttListItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new DyttListItemViewHolder(LayoutInflater.from(context).inflate(viewType, null, false));
+        return new DyttListItemViewHolder(LayoutInflater.from(context).inflate(viewType, parent, false));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class DyttListAdapter extends RecyclerView.Adapter<DyttListItemViewHolder
     public void handleMoreData(List<DyttListItem> dyttListItems) {
         if (dyttListItems != null && this.dyttListItems != null) {
             this.dyttListItems.addAll(dyttListItems);
-            notifyItemRangeInserted(this.dyttListItems.size()-dyttListItems.size(), dyttListItems.size());
+            notifyItemRangeInserted(this.dyttListItems.size() - dyttListItems.size(), dyttListItems.size());
         }
     }
 }

@@ -19,9 +19,6 @@ package com.wanghong.dytt;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
@@ -58,21 +55,14 @@ public class DyttDownloadItemViewHolder extends RecyclerView.ViewHolder {
                     public boolean onMenuItemClick(MenuItem item) {
                         ClipboardManager clipboardManager = (ClipboardManager) v.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
                         clipboardManager.setPrimaryClip(ClipData.newPlainText("downloadUrl", downloadUrl));
-                        Toast.makeText(v.getContext(), R.string.copy_to_clipboard, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(v.getContext(), R.string.copy_to_clipboard_successfully, Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 });
                 menu.findItem(R.id.action_download_open_with_thunder).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse(downloadUrl));
-                        intent.setPackage(ActivityConstants.THUNDER_PACKAGE_NAME);
-                        if (intent.resolveActivity(v.getContext().getPackageManager()) != null) {
-                            v.getContext().startActivity(intent);
-                        } else {
-                            Snackbar.make(v.getRootView(), R.string.prompt_thunder_not_installed, Snackbar.LENGTH_SHORT).show();
-                        }
+                        ActivityUtils.navigateToThunder(ActivityUtils.getActivity(v.getContext()), downloadUrl);
                         return true;
                     }
                 });
