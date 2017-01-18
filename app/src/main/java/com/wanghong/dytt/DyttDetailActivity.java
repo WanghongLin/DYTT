@@ -31,7 +31,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.Collections;
 import java.util.List;
 
 public class DyttDetailActivity extends AppCompatActivity {
@@ -88,7 +87,7 @@ public class DyttDetailActivity extends AppCompatActivity {
                                 Picasso.with(getApplicationContext())
                                         .load(Uri.parse(results.get(0).getThumbnailUrl()))
                                         .into(thumbnailImageView);
-                                setupDownloadUrls(Collections.singletonList(results.get(0).getThunderUrl()));
+                                setupDownloadUrls(results.get(0).getThunderUrls());
                             }
                         }).parseAsync();
             }

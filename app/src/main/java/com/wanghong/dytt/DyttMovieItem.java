@@ -16,6 +16,8 @@
 
 package com.wanghong.dytt;
 
+import java.util.List;
+
 /**
  * Created by wanghong on 11/19/16.
  */
@@ -32,14 +34,15 @@ public class DyttMovieItem {
 
     @CreatedFromHtmlTag("div[id='Zoom'] > span > table > tbody > tr > td > a[href]:lt(1)")
     @CreatedFromHtmlAttribute("href")
-    private String thunderUrl;
+    @CreatedFromHtmlCollections
+    private List<String> thunderUrls;
 
     @Override
     public String toString() {
         return "DyttMovieItem{" +
                 "posterUrl='" + posterUrl + '\'' +
                 ", thumbnailUrl='" + thumbnailUrl + '\'' +
-                ", thunderUrl='" + thunderUrl + '\'' +
+                ", thunderUrls=" + thunderUrls +
                 '}';
     }
 
@@ -51,7 +54,7 @@ public class DyttMovieItem {
         return thumbnailUrl;
     }
 
-    public String getThunderUrl() {
-        return thunderUrl;
+    public List<String> getThunderUrls() {
+        return thunderUrls;
     }
 }
