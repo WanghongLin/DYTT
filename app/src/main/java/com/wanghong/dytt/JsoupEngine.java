@@ -41,8 +41,6 @@ import java.util.Map;
 public class JsoupEngine<T> {
 
     private static final String TAG = JsoupEngine.class.getSimpleName();
-    private static final String USER_AGENT =
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36";
     private static final boolean DEBUG = false;
     private Class<T> tClass;
     private String pageUrl;
@@ -154,7 +152,7 @@ public class JsoupEngine<T> {
 
     public void parse() {
         try {
-            Document document = Jsoup.connect(pageUrl).userAgent(USER_AGENT).get();
+            Document document = Jsoup.connect(pageUrl).userAgent(ActivityConstants.USER_AGENT).get();
             final List<T> resultList = new ArrayList<>();
             List<Integer> elementSizes = new ArrayList<>();
 

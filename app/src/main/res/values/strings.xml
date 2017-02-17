@@ -30,4 +30,15 @@
     <string name="copy_to_clipboard_successfully">Copied to clipboard</string>
     <string name="app_store_not_installed">Application store not found</string>
     <string name="install_thunder_from_browser">Install Thunder via browser</string>
+    <string name="category_imdb_top_250_movie">IMDB Top 250</string>
+    <string name="metascore">Metascore</string>
+    <string name="director">Director</string>
+    <string name="actors">Actors</string>
+    <string name="writer">Writer</string>
+    <string name="release">Release</string>
+    <string name="country">Country</string>
+    <string name="imdb_com">IMDB.com</string>
+    <string name="prompt_starting_imdb">Starting IMDB…</string>
+    <string name="cancel">Cancel</string>
+    <string name="download_list">Download List</string>
 </resources>

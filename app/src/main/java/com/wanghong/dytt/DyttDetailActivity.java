@@ -81,12 +81,16 @@ public class DyttDetailActivity extends AppCompatActivity {
                         .setJsoupEngineCallback(new JsoupEngine.JsoupEngineCallback<DyttMovieItem>() {
                             @Override
                             public void onJsoupParsed(List<DyttMovieItem> results) {
-                                Picasso.with(getApplicationContext())
-                                        .load(Uri.parse(results.get(0).getPosterUrl()))
-                                        .into(posterImageView);
-                                Picasso.with(getApplicationContext())
-                                        .load(Uri.parse(results.get(0).getThumbnailUrl()))
-                                        .into(thumbnailImageView);
+                                if (results.get(0).getPosterUrl() != null) {
+                                    Picasso.with(getApplicationContext())
+                                            .load(Uri.parse(results.get(0).getPosterUrl()))
+                                            .into(posterImageView);
+                                }
+                                if (results.get(0).getThumbnailUrl() != null) {
+                                    Picasso.with(getApplicationContext())
+                                            .load(Uri.parse(results.get(0).getThumbnailUrl()))
+                                            .into(thumbnailImageView);
+                                }
                                 setupDownloadUrls(results.get(0).getThunderUrls());
                             }
                         }).parseAsync();

@@ -31,6 +31,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.wanghong.dytt.imdb.IMDBListFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,7 +127,8 @@ public class DyttActivity extends AppCompatActivity {
                 R.string.category_recently_update,
                 R.string.category_tv_drama_chinese,
                 R.string.category_tv_drama_western,
-                R.string.category_tv_drama_japan_korea
+                R.string.category_tv_drama_japan_korea,
+                R.string.category_imdb_top_250_movie
         };
 
         private final int[] TYPES = new int[] {
@@ -135,12 +138,14 @@ public class DyttActivity extends AppCompatActivity {
                 DyttDetailActivity.TYPE_DRAMA
         };
 
-        private List<DyttListFragment> dyttListFragments = new ArrayList<>();
+        private List<Fragment> dyttListFragments = new ArrayList<>();
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
             for (int i = 0; i < URLS.length; i++) {
                 dyttListFragments.add(DyttListFragment.newInstance(URLS[i], getString(TITLE_RES_ID[i]), TYPES[i]));
             }
+
+            dyttListFragments.add(IMDBListFragment.newInstance("http://www.imdb.com/chart/top?ref_=ft_250"));
         }
 
         @Override

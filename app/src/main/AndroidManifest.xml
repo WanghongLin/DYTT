@@ -35,6 +35,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".DyttDetailActivity" />
+        <activity android:name=".imdb.IMDBDetailActivity"></activity>
     </application>
 
 </manifest>
