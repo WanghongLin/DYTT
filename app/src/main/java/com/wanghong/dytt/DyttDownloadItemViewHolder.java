@@ -43,7 +43,7 @@ public class DyttDownloadItemViewHolder extends RecyclerView.ViewHolder {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ActivityUtils.navigateToThunder(ActivityUtils.getActivity(v.getContext()), downloadUrl);
             }
         });
         textView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {

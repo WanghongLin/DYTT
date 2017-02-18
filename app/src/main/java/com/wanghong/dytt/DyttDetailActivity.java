@@ -23,13 +23,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.util.List;
 
@@ -46,6 +51,7 @@ public class DyttDetailActivity extends AppCompatActivity {
     private ImageView thumbnailImageView;
     private TextView descriptionTextView;
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +61,11 @@ public class DyttDetailActivity extends AppCompatActivity {
         posterImageView = (ImageView) findViewById(R.id.dytt_detail_poster);
         thumbnailImageView = (ImageView) findViewById(R.id.dytt_detail_thumbnail);
         descriptionTextView = (TextView) findViewById(R.id.dytt_detail_description);
+        progressBar = (ProgressBar) findViewById(R.id.dytt_detail_progressbar);
         recyclerView = (RecyclerView) findViewById(R.id.dytt_detail_download_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        progressBar.setVisibility(View.VISIBLE);
         String url = getIntent().getStringExtra(EXTRA_URL);
         int type = getIntent().getIntExtra(EXTRA_TYPE, TYPE_MOVIE);
         if (url != null) {
@@ -73,6 +81,7 @@ public class DyttDetailActivity extends AppCompatActivity {
                                             .into(PicassoAutoFitImageTarget.from(posterImageView));
                                 }
                                 setupDownloadUrls(results.get(0).getThunderUrls());
+                                hideProgressBar();
                             }
                         }).parseAsync();
             } else {
@@ -81,17 +90,22 @@ public class DyttDetailActivity extends AppCompatActivity {
                         .setJsoupEngineCallback(new JsoupEngine.JsoupEngineCallback<DyttMovieItem>() {
                             @Override
                             public void onJsoupParsed(List<DyttMovieItem> results) {
-                                if (results.get(0).getPosterUrl() != null) {
+                                if (results.get(0).getImageUrls() != null && results.get(0).getImageUrls().size() > 0) {
                                     Picasso.with(getApplicationContext())
-                                            .load(Uri.parse(results.get(0).getPosterUrl()))
+                                            .load(Uri.parse(results.get(0).getImageUrls().get(0)))
                                             .into(PicassoAutoFitImageTarget.from(posterImageView));
                                 }
-                                if (results.get(0).getThumbnailUrl() != null) {
+                                if (results.get(0).getImageUrls() != null && results.get(0).getImageUrls().size() > 1) {
                                     Picasso.with(getApplicationContext())
-                                            .load(Uri.parse(results.get(0).getThumbnailUrl()))
+                                            .load(Uri.parse(results.get(0).getImageUrls().get(1)))
                                             .into(PicassoAutoFitImageTarget.from(thumbnailImageView));
                                 }
+                                descriptionTextView.setText(results.get(0).getDescription());
+                                Document htmlDescriptionDocument = Jsoup.parse(results.get(0).getDescription());
+                                htmlDescriptionDocument.select("img").remove();
+                                descriptionTextView.setText(Html.fromHtml(htmlDescriptionDocument.toString()));
                                 setupDownloadUrls(results.get(0).getThunderUrls());
+                                hideProgressBar();
                             }
                         }).parseAsync();
             }
@@ -107,6 +121,12 @@ public class DyttDetailActivity extends AppCompatActivity {
                 ActivityUtils.navigateToThunder(ActivityUtils.getActivity(v.getContext()), null);
             }
         });
+    }
+
+    private void hideProgressBar() {
+        if (progressBar != null) {
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     private void setupDownloadUrls(List<String> thunderUrls) {

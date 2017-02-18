@@ -117,10 +117,10 @@ public class DyttActivity extends AppCompatActivity {
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         private final String[] URLS = new String[] {
-                "http://www.ygdy8.net/html/gndy/dyzz/list_23_%1$d.html",
+                "http://dytt8.net/html/gndy/dyzz/list_23_%1$d.html",
                 "http://dytt8.net/html/tv/hytv/list_71_%1$d.html",
-                "http://www.dytt8.net/html/tv/oumeitv/list_9_%1$d.html",
-                "http://www.dytt8.net/html/tv/rihantv/list_8_%1$d.html"
+                "http://dytt8.net/html/tv/oumeitv/list_9_%1$d.html",
+                "http://dytt8.net/html/tv/rihantv/list_8_%1$d.html"
         };
 
         private final int[] TITLE_RES_ID = new int[] {

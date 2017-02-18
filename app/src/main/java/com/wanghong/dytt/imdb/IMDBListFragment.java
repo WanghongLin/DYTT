@@ -111,7 +111,8 @@ public class IMDBListFragment extends Fragment {
             List<IMDBListItem> imdbListItems = new ArrayList<>();
 
             try {
-                Document document = Jsoup.connect(params[0]).userAgent(ActivityConstants.USER_AGENT).get();
+                Document document = Jsoup.connect(params[0]).userAgent(ActivityConstants.USER_AGENT)
+                        .timeout(ActivityConstants.HTTP_TIMEOUT_MILLIS).get();
                 Elements posterElements = document.select("tr > td.posterColumn > a[href] > img");
                 Elements titleElements = document.select("tr > td.titleColumn > a[href]");
                 Elements ratingElements = document.select("tr > td.imdbRating > *");

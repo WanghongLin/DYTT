@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -32,6 +33,7 @@ import com.squareup.picasso.Target;
 
 public class PicassoAutoFitImageTarget implements Target {
 
+    private static final String TAG = "PicassoAutoFitImageTarg";
     private ImageView imageView;
     private int width;
 
@@ -57,6 +59,7 @@ public class PicassoAutoFitImageTarget implements Target {
                     imageView.setLayoutParams(layoutParams);
 
                     imageView.setImageBitmap(bitmap);
+                    Log.d(TAG, "onBitmapLoaded");
                 }
             });
         }

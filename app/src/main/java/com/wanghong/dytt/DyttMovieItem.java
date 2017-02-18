@@ -24,13 +24,10 @@ import java.util.List;
 
 public class DyttMovieItem {
 
-    @CreatedFromHtmlTag("div[id='Zoom'] > span > p > img[src]:lt(1)")
+    @CreatedFromHtmlTag("div[id='Zoom'] > span > p > img[src]")
     @CreatedFromHtmlAttribute("src")
-    private String posterUrl;
-
-    @CreatedFromHtmlTag("div[id='Zoom'] > span > p > img[src]:gt(2)")
-    @CreatedFromHtmlAttribute("src")
-    private String thumbnailUrl;
+    @CreatedFromHtmlCollections
+    private List<String> imageUrls;
 
     @CreatedFromHtmlTag("div[id='Zoom'] > span > table > tbody > tr > td > a[href]:lt(1)")
     @CreatedFromHtmlAttribute("href")
@@ -40,21 +37,25 @@ public class DyttMovieItem {
     @Override
     public String toString() {
         return "DyttMovieItem{" +
-                "posterUrl='" + posterUrl + '\'' +
-                ", thumbnailUrl='" + thumbnailUrl + '\'' +
+                "imageUrls=" + imageUrls +
                 ", thunderUrls=" + thunderUrls +
+                ", description='" + description + '\'' +
                 '}';
     }
 
-    public String getPosterUrl() {
-        return posterUrl;
-    }
+    @CreatedFromHtmlTag("div.co_content8 div[id='Zoom'] > span > p")
+    @CreatedFromInnerHtml
+    private String description;
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public List<String> getImageUrls() {
+        return imageUrls;
     }
 
     public List<String> getThunderUrls() {
         return thunderUrls;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

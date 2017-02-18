@@ -110,7 +110,8 @@ public class BTMagnetDialog {
                 if (elements != null && elements.size() > 0) {
                     String detailUrl = elements.get(0).absUrl("href");
                     if (detailUrl != null && (URLUtil.isHttpsUrl(detailUrl) || URLUtil.isHttpUrl(detailUrl))) {
-                        Document detailDocument = Jsoup.connect(detailUrl).get();
+                        Document detailDocument = Jsoup.connect(detailUrl).userAgent(ActivityConstants.USER_AGENT)
+                                .timeout(ActivityConstants.HTTP_TIMEOUT_MILLIS).get();
                         Elements downloadElements = detailDocument.select("ul.dlist > li > a[href^=magnet]");
                         for (int i = 0; i < downloadElements.size(); i++) {
                             BTMagnet btMagnet = new BTMagnet(downloadElements.get(i).text(),

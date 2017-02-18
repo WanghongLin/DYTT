@@ -53,12 +53,14 @@ public class JsoupEngine<T> {
         private String htmlAttribute;
         private boolean collections;
         private boolean absHref;
+        private boolean fromInnerHtml;
 
-        public HtmlTagAttribute(String htmlTag, String htmlAttribute, boolean collections, boolean absHref) {
+        public HtmlTagAttribute(String htmlTag, String htmlAttribute, boolean collections, boolean absHref, boolean fromInnerHtml) {
             this.htmlTag = htmlTag;
             this.htmlAttribute = htmlAttribute;
             this.collections = collections;
             this.absHref = absHref;
+            this.fromInnerHtml = fromInnerHtml;
         }
 
         public boolean isAbsHref() {
@@ -77,6 +79,10 @@ public class JsoupEngine<T> {
             return htmlAttribute;
         }
 
+        public boolean isFromInnerHtml() {
+            return fromInnerHtml;
+        }
+
         @Override
         public String toString() {
             return "HtmlTagAttribute{" +
@@ -84,6 +90,7 @@ public class JsoupEngine<T> {
                     ", htmlAttribute='" + htmlAttribute + '\'' +
                     ", collections=" + collections +
                     ", absHref=" + absHref +
+                    ", fromInnerHtml=" + fromInnerHtml +
                     '}';
         }
     }
@@ -102,6 +109,7 @@ public class JsoupEngine<T> {
             String attribute = null;
             boolean collections = false;
             boolean absHref = false;
+            boolean fromInnerHtml = false;
             for (Annotation annotation : field.getDeclaredAnnotations()) {
                 if (annotation.annotationType().isAssignableFrom(CreatedFromHtmlTag.class)) {
                     CreatedFromHtmlTag createdFromHtmlTag = (CreatedFromHtmlTag) annotation;
@@ -117,9 +125,12 @@ public class JsoupEngine<T> {
                 if (annotation.annotationType().isAssignableFrom(CreatedFromHtmlAbsHref.class)) {
                     absHref = true;
                 }
+                if (annotation.annotationType().isAssignableFrom(CreatedFromInnerHtml.class)) {
+                    fromInnerHtml = true;
+                }
             }
             if (tag != null) {
-                fieldHtmlTagAttributeMap.put(field, new HtmlTagAttribute(tag, attribute, collections, absHref));
+                fieldHtmlTagAttributeMap.put(field, new HtmlTagAttribute(tag, attribute, collections, absHref, fromInnerHtml));
             }
         }
 
@@ -155,9 +166,8 @@ public class JsoupEngine<T> {
 
     public void parse() {
         try {
-            Document document = Jsoup.connect(pageUrl).userAgent(ActivityConstants.USER_AGENT)
+            Document document = Jsoup.connect(pageUrl).userAgent(ActivityConstants.USER_AGENT_IE)
                     .timeout(ActivityConstants.HTTP_TIMEOUT_MILLIS).get();
-            // FIXME: 2/18/17 empty body second time on some page
             final List<T> resultList = new ArrayList<>();
             List<Integer> elementSizes = new ArrayList<>();
 
@@ -189,7 +199,11 @@ public class JsoupEngine<T> {
                         if (fieldHtmlTagAttributeEntry.getValue().getHtmlAttribute() != null) {
                             collections.add(element.attributes().get(fieldHtmlTagAttributeEntry.getValue().getHtmlAttribute()));
                         } else {
-                            collections.add(element.text());
+                            if (fieldHtmlTagAttributeEntry.getValue().isFromInnerHtml()) {
+                                collections.add(element.html());
+                            } else {
+                                collections.add(element.text());
+                            }
                         }
                     }
 
@@ -216,7 +230,8 @@ public class JsoupEngine<T> {
                                         elements.get(i).absUrl(fieldHtmlTagAttributeEntry.getValue().getHtmlAttribute()));
                             }
                         } else {
-                            fieldHtmlTagAttributeEntry.getKey().set(result, elements.get(i).text());
+                            fieldHtmlTagAttributeEntry.getKey().set(result,
+                                    fieldHtmlTagAttributeEntry.getValue().isFromInnerHtml() ? elements.get(i).html() : elements.get(i).text());
                         }
                     }
                 }
