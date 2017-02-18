@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -92,6 +93,11 @@ public class IMDBDetailActivity extends AppCompatActivity implements View.OnClic
         imdbAppButton.setOnClickListener(this);
         thunderButton.setOnClickListener(this);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         try {
             getPackageManager().getPackageInfo(ActivityConstants.IMDB_PACKAGE_NAME, 0);
         } catch (PackageManager.NameNotFoundException e) {
@@ -101,6 +107,15 @@ public class IMDBDetailActivity extends AppCompatActivity implements View.OnClic
 
         imdbListItem = getIntent().getParcelableExtra(IMDB_LIST_ITEM_EXTRA);
         new IMDBDetailTask().execute(imdbListItem.getImdbID());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public static void start(Context context, IMDBListItem imdbListItem) {

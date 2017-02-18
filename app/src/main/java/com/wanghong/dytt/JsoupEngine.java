@@ -16,6 +16,7 @@
 
 package com.wanghong.dytt;
 
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -81,6 +82,8 @@ public class JsoupEngine<T> {
             return "HtmlTagAttribute{" +
                     "htmlTag='" + htmlTag + '\'' +
                     ", htmlAttribute='" + htmlAttribute + '\'' +
+                    ", collections=" + collections +
+                    ", absHref=" + absHref +
                     '}';
         }
     }
@@ -140,19 +143,21 @@ public class JsoupEngine<T> {
     }
 
     public void parseAsync() {
-        new Thread() {
+        new AsyncTask<Void, Void, Void>() {
 
             @Override
-            public void run() {
-                super.run();
+            protected Void doInBackground(Void... params) {
                 parse();
+                return null;
             }
-        }.start();
+        }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public void parse() {
         try {
-            Document document = Jsoup.connect(pageUrl).userAgent(ActivityConstants.USER_AGENT).get();
+            Document document = Jsoup.connect(pageUrl).userAgent(ActivityConstants.USER_AGENT)
+                    .timeout(ActivityConstants.HTTP_TIMEOUT_MILLIS).get();
+            // FIXME: 2/18/17 empty body second time on some page
             final List<T> resultList = new ArrayList<>();
             List<Integer> elementSizes = new ArrayList<>();
 

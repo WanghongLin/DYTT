@@ -28,4 +28,5 @@ public class ActivityConstants {
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36";
     public static final String OMDB_ENDPOINT = "http://www.omdbapi.com/?i=%s&plot=full&r=json";
     public static final String BT_SEARCH_ENDPOINT = "http://www.bttiantangs.com/e/search/new.php";
+    public static final int HTTP_TIMEOUT_MILLIS = 6000;
 }

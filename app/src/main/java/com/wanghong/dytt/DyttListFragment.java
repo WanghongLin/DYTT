@@ -126,6 +126,9 @@ public class DyttListFragment extends Fragment {
                             for (DyttListItem result : results) {
                                 result.setType(type);
                             }
+                            if (results.size() == 0) {
+                                Log.w(TAG, "onJsoupParsed: empty result");
+                            }
                             if (swipeRefreshLayout != null) {
                                 swipeRefreshLayout.setRefreshing(false);
                             }
@@ -157,6 +160,7 @@ public class DyttListFragment extends Fragment {
     public void onStop() {
         super.onStop();
         dyttListAdapter = null;
+        recyclerView.setAdapter(null);
     }
 
     @Override

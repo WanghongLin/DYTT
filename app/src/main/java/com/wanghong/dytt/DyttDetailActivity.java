@@ -70,7 +70,7 @@ public class DyttDetailActivity extends AppCompatActivity {
                                 if (results.get(0).getPosterUrl() != null) {
                                     Picasso.with(getApplicationContext())
                                             .load(Uri.parse(results.get(0).getPosterUrl()))
-                                            .into(posterImageView);
+                                            .into(PicassoAutoFitImageTarget.from(posterImageView));
                                 }
                                 setupDownloadUrls(results.get(0).getThunderUrls());
                             }
@@ -84,12 +84,12 @@ public class DyttDetailActivity extends AppCompatActivity {
                                 if (results.get(0).getPosterUrl() != null) {
                                     Picasso.with(getApplicationContext())
                                             .load(Uri.parse(results.get(0).getPosterUrl()))
-                                            .into(posterImageView);
+                                            .into(PicassoAutoFitImageTarget.from(posterImageView));
                                 }
                                 if (results.get(0).getThumbnailUrl() != null) {
                                     Picasso.with(getApplicationContext())
                                             .load(Uri.parse(results.get(0).getThumbnailUrl()))
-                                            .into(thumbnailImageView);
+                                            .into(PicassoAutoFitImageTarget.from(thumbnailImageView));
                                 }
                                 setupDownloadUrls(results.get(0).getThunderUrls());
                             }
