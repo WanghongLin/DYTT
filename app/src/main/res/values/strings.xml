@@ -22,11 +22,10 @@
     <string name="category_tv_drama_western">Western TV Drama</string>
     <string name="category_tv_drama_japan_korea">Japan/Korea TV Drama</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
-    <string name="go_to_thunder">Go to thunder</string>
+    <string name="go_to_thunder">Download with Thunder mobile</string>
     <string name="prompt_thunder_not_installed">Thunder not installed</string>
     <string name="action_install">Install</string>
     <string name="prompt_any_suggestion">Any suggestion?\n\nContact me: wh.lin63@gmail.com</string>
-    <string name="open_with_thunder">Open with Thunder</string>
     <string name="copy_to_clipboard_successfully">Copied to clipboard</string>
     <string name="app_store_not_installed">Application store not found</string>
     <string name="install_thunder_from_browser">Install Thunder via browser</string>
@@ -41,4 +40,6 @@
     <string name="prompt_starting_imdb">Starting IMDB…</string>
     <string name="cancel">Cancel</string>
     <string name="download_list">Download List</string>
+    <string name="share">Share</string>
+    <string name="prompt_send_to">Send to</string>
 </resources>

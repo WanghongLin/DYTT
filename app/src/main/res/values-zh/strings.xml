@@ -23,11 +23,10 @@
     <string name="category_tv_drama_japan_korea">日韩电视剧</string>
     <string name="category_tv_drama_western">欧美电视剧</string>
     <string name="copy_to_clipboard">复制到剪贴板</string>
-    <string name="go_to_thunder">打开手机迅雷</string>
+    <string name="go_to_thunder">使用手机迅雷下载</string>
     <string name="prompt_any_suggestion">有何高见？麻烦联系 wh.lin63@gmail.com</string>
     <string name="prompt_thunder_not_installed">貌似手机迅雷没有安装</string>
     <string name="action_install">去应用市场安装</string>
-    <string name="open_with_thunder">使用手机迅雷打开</string>
     <string name="copy_to_clipboard_successfully">已复制</string>
     <string name="app_store_not_installed">无可用的应用商店</string>
     <string name="install_thunder_from_browser">使用浏览器安装迅雷</string>
@@ -42,4 +41,6 @@
     <string name="prompt_starting_imdb">正在启动IMDB……</string>
     <string name="release">上映时间</string>
     <string name="writer">作者</string>
+    <string name="prompt_send_to">发动到</string>
+    <string name="share">分享</string>
 </resources>

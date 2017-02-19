@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2016 wanghong
+  ~ Copyright (C) 2017 wanghong
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,15 +14,12 @@
   ~ limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_download_copy"
-        android:orderInCategory="100"
-        android:title="@string/copy_to_clipboard" />
-
-    <item
-        android:id="@+id/action_download_open_with_thunder"
-        android:orderInCategory="101"
-        android:title="@string/go_to_thunder" />
+        android:id="@+id/action_share"
+        android:icon="@drawable/ic_share_white_24dp"
+        android:title="@string/share"
+        app:showAsAction="always" />
 </menu>

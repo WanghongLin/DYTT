@@ -88,4 +88,14 @@ public class ActivityUtils {
 
         return null;
     }
+
+    private static final String TAG = "ActivityUtils";
+    public static void performShare(Activity activity, String url) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, url);
+        intent.setType("text/plain");
+        if (intent.resolveActivity(activity.getPackageManager()) != null) {
+            activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.prompt_send_to)));
+        }
+    }
 }

@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.wanghong.dytt.ActivityConstants;
+import com.wanghong.dytt.ActivityUtils;
 import com.wanghong.dytt.R;
 
 import java.io.IOException;
@@ -114,8 +116,18 @@ public class IMDBDetailActivity extends AppCompatActivity implements View.OnClic
         if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
+        } else {
+            if (item.getItemId() == R.id.action_share) {
+                ActivityUtils.performShare(this, imdbListItem.getImdbLink());
+            }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_share, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     public static void start(Context context, IMDBListItem imdbListItem) {
