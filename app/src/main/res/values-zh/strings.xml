@@ -19,9 +19,9 @@
     <string name="app_name">电影天堂</string>
     <string name="action_settings">设置</string>
     <string name="category_recently_update">最近更新</string>
-    <string name="category_tv_drama_chinese">华语电视剧</string>
-    <string name="category_tv_drama_japan_korea">日韩电视剧</string>
-    <string name="category_tv_drama_western">欧美电视剧</string>
+    <string name="category_tv_drama_chinese">华语电视</string>
+    <string name="category_tv_drama_japan_korea">日韩电视</string>
+    <string name="category_tv_drama_western">欧美电视</string>
     <string name="copy_to_clipboard">复制到剪贴板</string>
     <string name="go_to_thunder">使用手机迅雷下载</string>
     <string name="prompt_any_suggestion">有何高见？麻烦联系 wh.lin63@gmail.com</string>
@@ -41,6 +41,6 @@
     <string name="prompt_starting_imdb">正在启动IMDB……</string>
     <string name="release">上映时间</string>
     <string name="writer">作者</string>
-    <string name="prompt_send_to">发动到</string>
+    <string name="prompt_send_to">发送到</string>
     <string name="share">分享</string>
 </resources>
