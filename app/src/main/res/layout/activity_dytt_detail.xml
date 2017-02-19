@@ -69,14 +69,6 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:textColor="@color/font_color" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/dytt_detail_download_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
-
-            </android.support.v7.widget.RecyclerView>
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

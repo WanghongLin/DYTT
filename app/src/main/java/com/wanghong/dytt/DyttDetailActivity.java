@@ -21,8 +21,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -52,8 +50,10 @@ public class DyttDetailActivity extends AppCompatActivity {
     private ImageView posterImageView;
     private ImageView thumbnailImageView;
     private TextView descriptionTextView;
-    private RecyclerView recyclerView;
+    private Button gotoThunderButton;
     private ProgressBar progressBar;
+
+    private List<String> thunderUrls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +65,6 @@ public class DyttDetailActivity extends AppCompatActivity {
         descriptionTextView = (TextView) findViewById(R.id.dytt_detail_description);
         TextView titleTextView = (TextView) findViewById(R.id.dytt_detail_title);
         progressBar = (ProgressBar) findViewById(R.id.dytt_detail_progressbar);
-        recyclerView = (RecyclerView) findViewById(R.id.dytt_detail_download_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         progressBar.setVisibility(View.VISIBLE);
         String url = getIntent().getStringExtra(EXTRA_URL);
@@ -121,11 +119,20 @@ public class DyttDetailActivity extends AppCompatActivity {
                 titleTextView.setText(title);
             }
         }
-        Button gotoThunderButton = (Button) findViewById(R.id.dytt_detail_go_to_thunder);
+        gotoThunderButton = (Button) findViewById(R.id.dytt_detail_go_to_thunder);
+        gotoThunderButton.setEnabled(false);
         gotoThunderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityUtils.navigateToThunder(ActivityUtils.getActivity(v.getContext()), null);
+                if (thunderUrls != null) {
+                    if (thunderUrls.size() == 1) {
+                        ActivityUtils.navigateToThunder(ActivityUtils.getActivity(v.getContext()), thunderUrls.get(0));
+                    } else {
+                        DyttDownloadListDialog.showDialog(v.getContext(), thunderUrls);
+                    }
+                } else {
+                    ActivityUtils.navigateToThunder(ActivityUtils.getActivity(v.getContext()), null);
+                }
             }
         });
     }
@@ -137,8 +144,8 @@ public class DyttDetailActivity extends AppCompatActivity {
     }
 
     private void setupDownloadUrls(List<String> thunderUrls) {
-        DyttDownloadAdapter adapter = new DyttDownloadAdapter(thunderUrls, this);
-        recyclerView.setAdapter(adapter);
+        this.thunderUrls = thunderUrls;
+        gotoThunderButton.setEnabled(thunderUrls != null);
     }
 
     public static void start(Context context, String url, int type, String title) {
