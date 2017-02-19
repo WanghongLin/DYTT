@@ -31,4 +31,15 @@
     <string name="copy_to_clipboard_successfully">已复制</string>
     <string name="app_store_not_installed">无可用的应用商店</string>
     <string name="install_thunder_from_browser">使用浏览器安装迅雷</string>
+    <string name="cancel">取消</string>
+    <string name="category_imdb_top_250_movie">IMDB Top 250</string>
+    <string name="actors">演员阵容</string>
+    <string name="country">国家</string>
+    <string name="director">导演</string>
+    <string name="download_list">下载列表</string>
+    <string name="imdb_com">IMDB.com</string>
+    <string name="metascore">主流媒体评分</string>
+    <string name="prompt_starting_imdb">正在启动IMDB……</string>
+    <string name="release">上映时间</string>
+    <string name="writer">作者</string>
 </resources>
