@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +44,7 @@ public class DyttDetailActivity extends AppCompatActivity {
     private static final String TAG = DyttDetailActivity.class.getSimpleName();
     private static final String EXTRA_URL = "extra_url";
     private static final String EXTRA_TYPE = "extra_type";
+    private static final String EXTRA_TITLE = "extra_title";
 
     public static final int TYPE_MOVIE = 710;
     public static final int TYPE_DRAMA = 265;
@@ -61,6 +63,7 @@ public class DyttDetailActivity extends AppCompatActivity {
         posterImageView = (ImageView) findViewById(R.id.dytt_detail_poster);
         thumbnailImageView = (ImageView) findViewById(R.id.dytt_detail_thumbnail);
         descriptionTextView = (TextView) findViewById(R.id.dytt_detail_description);
+        TextView titleTextView = (TextView) findViewById(R.id.dytt_detail_title);
         progressBar = (ProgressBar) findViewById(R.id.dytt_detail_progressbar);
         recyclerView = (RecyclerView) findViewById(R.id.dytt_detail_download_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -78,7 +81,7 @@ public class DyttDetailActivity extends AppCompatActivity {
                                 if (results.get(0).getPosterUrl() != null) {
                                     Picasso.with(getApplicationContext())
                                             .load(Uri.parse(results.get(0).getPosterUrl()))
-                                            .into(PicassoAutoFitImageTarget.from(posterImageView));
+                                            .into(posterImageView, PicassoAutoFitCallback.createCallback(posterImageView));
                                 }
                                 setupDownloadUrls(results.get(0).getThunderUrls());
                                 hideProgressBar();
@@ -93,12 +96,12 @@ public class DyttDetailActivity extends AppCompatActivity {
                                 if (results.get(0).getImageUrls() != null && results.get(0).getImageUrls().size() > 0) {
                                     Picasso.with(getApplicationContext())
                                             .load(Uri.parse(results.get(0).getImageUrls().get(0)))
-                                            .into(PicassoAutoFitImageTarget.from(posterImageView));
+                                            .into(posterImageView, PicassoAutoFitCallback.createCallback(posterImageView));
                                 }
                                 if (results.get(0).getImageUrls() != null && results.get(0).getImageUrls().size() > 1) {
                                     Picasso.with(getApplicationContext())
                                             .load(Uri.parse(results.get(0).getImageUrls().get(1)))
-                                            .into(PicassoAutoFitImageTarget.from(thumbnailImageView));
+                                            .into(thumbnailImageView, PicassoAutoFitCallback.createCallback(thumbnailImageView));
                                 }
                                 descriptionTextView.setText(results.get(0).getDescription());
                                 Document htmlDescriptionDocument = Jsoup.parse(results.get(0).getDescription());
@@ -113,6 +116,10 @@ public class DyttDetailActivity extends AppCompatActivity {
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            String title = getIntent().getStringExtra(EXTRA_TITLE);
+            if (title != null && !TextUtils.isEmpty(title)) {
+                titleTextView.setText(title);
+            }
         }
         Button gotoThunderButton = (Button) findViewById(R.id.dytt_detail_go_to_thunder);
         gotoThunderButton.setOnClickListener(new View.OnClickListener() {
@@ -134,10 +141,11 @@ public class DyttDetailActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    public static void start(Context context, String url, int type) {
+    public static void start(Context context, String url, int type, String title) {
         Intent starter = new Intent(context, DyttDetailActivity.class);
         starter.putExtra(EXTRA_URL, url);
         starter.putExtra(EXTRA_TYPE, type);
+        starter.putExtra(EXTRA_TITLE, title);
         context.startActivity(starter);
     }
 

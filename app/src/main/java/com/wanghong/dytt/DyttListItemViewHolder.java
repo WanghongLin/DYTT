@@ -39,7 +39,7 @@ public class DyttListItemViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 System.out.println(dyttListItem.getTargetUrl());
-                DyttDetailActivity.start(v.getContext(), dyttListItem.getTargetUrl(), dyttListItem.getType());
+                DyttDetailActivity.start(v.getContext(), dyttListItem.getTargetUrl(), dyttListItem.getType(), dyttListItem.getTitle());
             }
         });
     }
