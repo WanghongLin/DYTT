@@ -18,3 +18,4 @@
 
 -dontwarn com.squareup.okhttp.**
 -keeppackagenames org.jsoup.nodes
+-dontwarn com.google.errorprone.annotations.*
