@@ -36,7 +36,14 @@ import com.wanghong.dytt.imdb.IMDBListFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DyttActivity extends AppCompatActivity {
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
+
+public class DyttActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -55,6 +62,7 @@ public class DyttActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dytt);
 
@@ -108,6 +116,14 @@ public class DyttActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentDispatchingAndroidInjector;
     }
 
     /**

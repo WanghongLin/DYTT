@@ -16,10 +16,15 @@
 
 package com.wanghong.dytt;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 /**
  * Created by wanghong on 11/19/16.
  */
 
+@Entity
 public class DyttListItem {
 
     private int type;
@@ -38,6 +43,8 @@ public class DyttListItem {
     @CreatedFromHtmlTag("a[href].ulink")
     @CreatedFromHtmlAttribute("href")
     @CreatedFromHtmlAbsHref
+    @PrimaryKey
+    @NonNull
     private String targetUrl;
 
     @CreatedFromHtmlTag("td > font[color='#8F8C89']")
@@ -62,5 +69,17 @@ public class DyttListItem {
 
     public String getDateTime() {
         return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setTargetUrl(String targetUrl) {
+        this.targetUrl = targetUrl;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

@@ -24,7 +24,7 @@ import java.util.List;
 
 public class DyttMovieItem {
 
-    @CreatedFromHtmlTag("div[id='Zoom'] > span > p > img[src]")
+    @CreatedFromHtmlTag("div[id='Zoom'] > span > img[src]")
     @CreatedFromHtmlAttribute("src")
     @CreatedFromHtmlCollections
     private List<String> imageUrls;

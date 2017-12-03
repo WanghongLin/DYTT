@@ -17,8 +17,6 @@
 package com.wanghong.dytt;
 
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import org.jsoup.Jsoup;
@@ -153,18 +151,28 @@ public class JsoupEngine<T> {
         return this;
     }
 
-    public void parseAsync() {
-        new AsyncTask<Void, Void, Void>() {
+    // FIXME: 12/3/17 memory leak
+    private class JsoupEngineAsyncTask extends AsyncTask<Void, Void, List<T>> {
 
-            @Override
-            protected Void doInBackground(Void... params) {
-                parse();
-                return null;
+        @Override
+        protected List<T> doInBackground(Void... voids) {
+            return parse();
+        }
+
+        @Override
+        protected void onPostExecute(List<T> ts) {
+            super.onPostExecute(ts);
+            if (ts != null && getJsoupEngineCallback() != null) {
+                getJsoupEngineCallback().onJsoupParsed(ts);
             }
-        }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        }
+    };
+
+    public void parseAsync() {
+        new JsoupEngineAsyncTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
-    public void parse() {
+    public List<T> parse() {
         try {
             Document document = Jsoup.connect(pageUrl).userAgent(ActivityConstants.USER_AGENT_IE)
                     .timeout(ActivityConstants.HTTP_TIMEOUT_MILLIS).get();
@@ -237,14 +245,7 @@ public class JsoupEngine<T> {
                 }
             }
 
-            if (jsoupEngineCallback != null) {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        jsoupEngineCallback.onJsoupParsed(resultList);
-                    }
-                });
-            }
+            return resultList;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -252,5 +253,10 @@ public class JsoupEngine<T> {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public JsoupEngineCallback<T> getJsoupEngineCallback() {
+        return jsoupEngineCallback;
     }
 }

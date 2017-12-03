@@ -17,7 +17,6 @@
 package com.wanghong.dytt;
 
 import android.graphics.Matrix;
-import android.graphics.Rect;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -41,14 +40,15 @@ public class PicassoAutoFitCallback implements Callback {
 
     @Override
     public void onSuccess() {
-        Rect rect = imageView.getDrawable().getBounds();
+        int width = imageView.getDrawable().getIntrinsicWidth();
+        int height = imageView.getDrawable().getIntrinsicHeight();
         Matrix matrix = new Matrix();
-        float scale = ((float) imageView.getResources().getDisplayMetrics().widthPixels
-                - imageView.getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin) * 2) / (float) rect.width();
+        float scale = (imageView.getResources().getDisplayMetrics().widthPixels
+                - imageView.getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin) * 2) / (float) width;
         matrix.postScale(scale, scale);
 
         ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
-        layoutParams.height = (int) (scale * rect.height());
+        layoutParams.height = (int) (scale * height);
         imageView.setLayoutParams(layoutParams);
 
         imageView.setScaleType(ImageView.ScaleType.MATRIX);

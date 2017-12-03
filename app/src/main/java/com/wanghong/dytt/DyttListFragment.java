@@ -16,8 +16,11 @@
 
 package com.wanghong.dytt;
 
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +31,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.wanghong.dytt.dao.DyttAppDatabase;
+import com.wanghong.dytt.model.DyttListViewModel;
+
 import java.util.List;
+
+import javax.inject.Inject;
+
+import dagger.android.support.AndroidSupportInjection;
 
 
 public class DyttListFragment extends Fragment {
@@ -47,6 +57,12 @@ public class DyttListFragment extends Fragment {
     private RecyclerView recyclerView;
     private DyttListAdapter dyttListAdapter;
     private static final int STARTED_PAGE = 1;
+
+    @Inject
+    DyttAppDatabase dyttAppDatabase;
+
+    @Inject
+    DyttListViewModel dyttListViewModel;
 
     public DyttListFragment() {
         // Required empty public constructor
@@ -83,7 +99,7 @@ public class DyttListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dytt_list, container, false);
 
@@ -109,6 +125,15 @@ public class DyttListFragment extends Fragment {
                 loadNextDataFromApi(page, false);
             }
         });
+        if (getActivity() != null) {
+            dyttListViewModel.getDyttListItems(url, type)
+                    .observe(getActivity(), new Observer<List<DyttListItem>>() {
+                        @Override
+                        public void onChanged(@Nullable List<DyttListItem> dyttListItems) {
+
+                        }
+                    });
+        }
         return view;
     }
 
@@ -121,11 +146,17 @@ public class DyttListFragment extends Fragment {
         new JsoupEngine<DyttListItem>().setPageUrl(url).setResultClass(DyttListItem.class)
                 .setJsoupEngineCallback(new JsoupEngine.JsoupEngineCallback<DyttListItem>() {
                     @Override
-                    public void onJsoupParsed(List<DyttListItem> results) {
+                    public void onJsoupParsed(final List<DyttListItem> results) {
                         if (results != null) {
                             for (DyttListItem result : results) {
                                 result.setType(type);
                             }
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    dyttAppDatabase.dyttListItemDao().insertAll(results);
+                                }
+                            }).start();
                             if (results.size() == 0) {
                                 Log.w(TAG, "onJsoupParsed: empty result");
                             }
@@ -148,6 +179,7 @@ public class DyttListFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
 
@@ -160,7 +192,9 @@ public class DyttListFragment extends Fragment {
     public void onStop() {
         super.onStop();
         dyttListAdapter = null;
-        recyclerView.setAdapter(null);
+        if (recyclerView != null) {
+            recyclerView.setAdapter(null);
+        }
     }
 
     @Override

@@ -16,14 +16,22 @@
 
 package com.wanghong.dytt;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
 /**
  * Created by wanghong on 11/19/16.
  */
 
+@Entity
 public class DyttTVDramaItem {
 
+    @PrimaryKey
+    @NonNull
+    private String url;
 
     @CreatedFromHtmlTag("div[id='Zoom'] > span > p > img[src]:lt(2)")
     @CreatedFromHtmlAttribute("src")
@@ -48,5 +56,22 @@ public class DyttTVDramaItem {
 
     public List<String> getThunderUrls() {
         return thunderUrls;
+    }
+
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
+    }
+
+    public void setThunderUrls(List<String> thunderUrls) {
+        this.thunderUrls = thunderUrls;
+    }
+
+    @NonNull
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(@NonNull String url) {
+        this.url = url;
     }
 }

@@ -16,13 +16,16 @@
 
 package com.wanghong.dytt;
 
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,11 +35,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.wanghong.dytt.model.DyttDetailViewModel;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.util.List;
+
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 
 public class DyttDetailActivity extends AppCompatActivity {
 
@@ -56,8 +64,12 @@ public class DyttDetailActivity extends AppCompatActivity {
 
     private List<String> thunderUrls;
 
+    @Inject
+    DyttDetailViewModel detailViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dytt_detail);
 
@@ -71,27 +83,38 @@ public class DyttDetailActivity extends AppCompatActivity {
         String url = getIntent().getStringExtra(EXTRA_URL);
         int type = getIntent().getIntExtra(EXTRA_TYPE, TYPE_MOVIE);
         if (url != null) {
+            detailViewModel.initViewModel(type, url);
             if (type == TYPE_DRAMA) {
-                new JsoupEngine<DyttTVDramaItem>().setResultClass(DyttTVDramaItem.class)
-                        .setPageUrl(url)
-                        .setJsoupEngineCallback(new JsoupEngine.JsoupEngineCallback<DyttTVDramaItem>() {
-                            @Override
-                            public void onJsoupParsed(List<DyttTVDramaItem> results) {
-                                if (results.get(0).getPosterUrl() != null) {
-                                    Picasso.with(getApplicationContext())
-                                            .load(Uri.parse(results.get(0).getPosterUrl()))
-                                            .into(posterImageView, PicassoAutoFitCallback.createCallback(posterImageView));
-                                }
-                                setupDownloadUrls(results.get(0).getThunderUrls());
-                                hideProgressBar();
-                            }
-                        }).parseAsync();
+                detailViewModel.getDyttTVDramaItems().observe(this, new Observer<List<DyttTVDramaItem>>() {
+                    @Override
+                    public void onChanged(@Nullable List<DyttTVDramaItem> dyttTVDramaItems) {
+                        if (dyttTVDramaItems != null && dyttTVDramaItems.size() > 0) {
+                            Picasso picasso = Picasso.with(getApplicationContext());
+                            picasso.setLoggingEnabled(true);
+                            picasso.load(Uri.parse(dyttTVDramaItems.get(0).getPosterUrl()))
+                                    .into(posterImageView, PicassoAutoFitCallback.createCallback(posterImageView));
+                            setupDownloadUrls(dyttTVDramaItems.get(0).getThunderUrls());
+                            hideProgressBar();
+                            Log.d(TAG, "onChanged: " + dyttTVDramaItems.get(0));
+                        }
+                    }
+                });
             } else {
+                detailViewModel.getDyttMovieItems().observe(this, new Observer<List<DyttMovieItem>>() {
+                    @Override
+                    public void onChanged(@Nullable List<DyttMovieItem> dyttMovieItems) {
+
+                    }
+                });
                 new JsoupEngine<DyttMovieItem>().setResultClass(DyttMovieItem.class)
                         .setPageUrl(url)
                         .setJsoupEngineCallback(new JsoupEngine.JsoupEngineCallback<DyttMovieItem>() {
                             @Override
                             public void onJsoupParsed(List<DyttMovieItem> results) {
+                                if (results == null || results.size() == 0) {
+                                    return;
+                                }
+
                                 if (results.get(0).getImageUrls() != null && results.get(0).getImageUrls().size() > 0) {
                                     Picasso.with(getApplicationContext())
                                             .load(Uri.parse(results.get(0).getImageUrls().get(0)))
@@ -102,10 +125,13 @@ public class DyttDetailActivity extends AppCompatActivity {
                                             .load(Uri.parse(results.get(0).getImageUrls().get(1)))
                                             .into(thumbnailImageView, PicassoAutoFitCallback.createCallback(thumbnailImageView));
                                 }
-                                descriptionTextView.setText(results.get(0).getDescription());
-                                Document htmlDescriptionDocument = Jsoup.parse(results.get(0).getDescription());
-                                htmlDescriptionDocument.select("img").remove();
-                                descriptionTextView.setText(Html.fromHtml(htmlDescriptionDocument.toString()));
+
+                                final String description = results.get(0).getDescription();
+                                if (!TextUtils.isEmpty(description)) {
+                                    Document htmlDescriptionDocument = Jsoup.parse(results.get(0).getDescription());
+                                    htmlDescriptionDocument.select("img").remove();
+                                    descriptionTextView.setText(Html.fromHtml(htmlDescriptionDocument.toString()));
+                                }
                                 setupDownloadUrls(results.get(0).getThunderUrls());
                                 hideProgressBar();
                             }
@@ -113,8 +139,8 @@ public class DyttDetailActivity extends AppCompatActivity {
             }
         }
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getActionBar() != null) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
             String title = getIntent().getStringExtra(EXTRA_TITLE);
             if (title != null && !TextUtils.isEmpty(title)) {
                 titleTextView.setText(title);
